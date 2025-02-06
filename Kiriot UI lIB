@@ -2047,17 +2047,15 @@ do
 					if not CoreGui:IsAncestorOf(v) then
 						table.insert(new, v)
 					else
-						--don't insert it if it's a descendant of a different gui than default roblox guis
-						for j,k in pairs(RobloxGuis) do
-							local gui = CoreGui:FindFirstChild(k)
-							if gui then
-								if v == gui or gui:IsAncestorOf(v) then
-									table.insert(new, v)
-									break
-								end
-							end
-						end
-					end
+for j, k in pairs(RobloxGuis) do
+    local gui = CoreGui:FindFirstChild(k)
+    if gui then
+        if v == gui or (gui and gui:IsAncestorOf(v)) then  -- Added check
+            table.insert(new, v)
+            break
+        end
+    end
+end
 				end
 			end
 		end
