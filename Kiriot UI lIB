@@ -1,4 +1,4 @@
-SX_VM_CNONE = SX_VM_CNONE or function() end
+
 
 local Christmas = false
 local AprilFools = false
