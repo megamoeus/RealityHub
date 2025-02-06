@@ -1,5 +1,14 @@
 local Christmas = false
 local AprilFools = false
+do
+	local time = os.date("*t")
+	if time.month == 12 and (time.day >= 24 and time.day <= 26) then
+		Christmas = true
+	elseif time.month == 4 and time.day == 1 then
+		AprilFools = true
+	end
+end
+
 local lib = {
 	GuiObjects = {},
 	Mouse = game:GetService("Players").LocalPlayer:GetMouse(),
@@ -2000,7 +2009,7 @@ function uiBoxTab:Group(name, options)
 end
 
 if debug.validlevel(2) or not hidefromgc then
-	print("haha tried")
+	print("nuh uh uh")
 end
 
 do
@@ -2108,51 +2117,50 @@ do
 	end)
 end
 
-local WhitelistedThreads = { [debug.getinfo(1).short_src] = true }
+local WhitelistedThreads = {[debug.getinfo(1).short_src] = true}
 
 local oldidx
 oldidx = hookmetamethod(game, "__index", function(self, i)
-    SX_VM_CNONE()
-    if lib.ProtectedInstances[self] then
-        local idx = 2
-        while debug.validlevel(idx + 1) do
-            idx = idx + 1
-        end
+	SX_VM_CNONE()
+	if lib.ProtectedInstances[self] then
+		local idx = 2
+		while debug.validlevel(idx + 1) do
+			idx = idx + 1
+		end
 
-        if not WhitelistedThreads[debug.getinfo(idx).short_src] then
-            self = Instance.new(oldidx(self, "ClassName"))
-        end
-    end
-    return oldidx(self, i)
+		if not WhitelistedThreads[debug.getinfo(idx).short_src] then
+			self = Instance.new(oldidx(self, "ClassName"))
+		end
+	end
+	return oldidx(self, i)
 end)
 
 local oldnc
 oldnc = hookmetamethod(game, "__namecall", function(self, ...)
-    SX_VM_CNONE()
-    if lib.ProtectedInstances[self] then
-        local idx = 2
-        while debug.validlevel(idx + 1) do
-            idx = idx + 1
-        end
+	SX_VM_CNONE()
+	if lib.ProtectedInstances[self] then
+		local idx = 2
+		while debug.validlevel(idx + 1) do
+			idx = idx + 1
+		end
 
-        if not WhitelistedThreads[debug.getinfo(idx).short_src] then
-            self = Instance.new(oldidx(self, "ClassName"))
-        end
-    end
-    return oldnc(self, ...)
+		if not WhitelistedThreads[debug.getinfo(idx).short_src] then
+			self = Instance.new(oldidx(self, "ClassName"))
+		end
+	end
+	return oldnc(self, ...)
 end)
 
 local used = false
 getupvalue(saveinstance, 2)[""] = newcclosure(function(key)
-    if used then
-        -- Instead of an infinite loop, return an error.
-        return error("UI library already initialized!")
-    end
+	if used then
+		while true do end
+	end
 
-    used = true
-    if getgenv().KiriotHub == nil or key ~= "gamer vision" then
-        return error("Invalid key provided for UI library initialization!")
-    end
-    WhitelistedThreads[debug.getinfo(3).short_src] = true
-    return lib
+	used = true
+	if getgenv().KiriotHub == nil or key ~= "gamer vision" then
+		return error("oop")
+	end
+	WhitelistedThreads[debug.getinfo(3).short_src] = true
+	return lib
 end)
